@@ -1,0 +1,9 @@
+---
+- name: vps.local
+  description: Personal VPS
+  box: centos/7
+  cpus: 2
+  cpu_execution_cap: 75
+  ram: 1024
+  public_network:
+    bridge: "en0: Wi-Fi (AirPort)"

@@ -1,0 +1,24 @@
+#cloud-config
+
+hostname: test
+fqdn: test.local
+manage_etc_hosts: true
+
+# set the locale
+locale: en_NZ.UTF-8
+
+# timezone: set the timezone for this instance
+timezone: UTC
+
+# recreate server ssh keys
+ssh_deletekeys: 1
+
+# add an ssh key the default user created by cloud-init
+users:
+  - name: centos
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3...
+
+packages:
+  - vim
+  - tmux
