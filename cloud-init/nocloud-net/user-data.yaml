@@ -16,8 +16,9 @@ ssh_deletekeys: 1
 # add an ssh key the default user created by cloud-init
 users:
   - name: centos
+    sudo: ALL=(ALL) NOPASSWD:ALL
     ssh-authorized-keys:
-      - ssh-rsa AAAAB3...
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/UGP/BfbMgm4CpJkBYQWQoBIJ5aq2gOC3RwxkCRoEc3i9D8th6DwC3ESOMtq+gnpVVNNGrcER/6dkS0hrfPcBeFnGri/8luJ4ePjiuMCpeAC9ZTLLRROnda8EgMgWNmkqCBwsrjOa1Tm7rcZQoyBb34PLyrK45qs6J6D8gbA+AVbtcUWuMT+sv+FOUiJnrQVrTQNBgExYWh38kmspxnDh6z1cDdzkNwTdyyCfMXcNurUMIqFICx9IXaaE6FST7lv3h11W55amumcqRfKUGjKc1eiCBL8+mCS1Bhs5gtk4vJX5S5NkYtm3H+y0WhAZAtDRMSwJlBjlC8vS0aZzsq3UYKMPSGamnwjBUmz+ZwSL90mLJwLU5BYU3JSlX6hP+RtJKX9XBi54G7fsPoQMtrffidxjNXObAxovaiwEjHE2iP4iD4loCuGc5aLg43tv87lBxCqAZhTKX8yjz2QQ/0BoaKJxpYoyyfzhLh4/DiVXpvFgUiQa8EKcvz+F7MngS15RMc/0fkmIHY2pTxCjYuzNGVaeuLF8xB4SJ8pk9Q94X7aJcR5FqX1nwU+LkF04d2eV23m/A8fQt5/F0OMTs45CvcCMkC4MmxomFcCQdP5K4qkB7T5QFUF9i1WprCzeT4K5j8UlIOkN+GySaC8MzKopfoQcHOgq5TU+u2RxHwik5w== deploy
 
 packages:
   - vim
