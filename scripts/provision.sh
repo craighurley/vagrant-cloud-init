@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -ex
 
 SUCCESS_INDICATOR=/opt/.vagrant_provision_success
 DATA_SOURCE=/var/lib/cloud/seed/nocloud-net
@@ -27,3 +27,5 @@ cloud-init modules
 
 # create vagrant_provision on successful run
 touch $SUCCESS_INDICATOR
+
+exit 0

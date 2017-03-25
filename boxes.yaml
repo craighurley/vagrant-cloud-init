@@ -1,9 +1,24 @@
 ---
-- name: vps.local
-  description: Personal VPS
-  box: centos/7
+- name: haproxy.local
+  description: haproxy node
+  box: centos/6
   cpus: 2
   cpu_execution_cap: 75
   ram: 1024
-  public_network:
-    bridge: "en0: Wi-Fi (AirPort)"
+  ssh_port: 2201
+  provision:
+    meta-data: ./cloud-init/nocloud-net/meta-data.yaml
+    user-data: ./cloud-init/nocloud-net/user-data-haproxy.yaml
+    script: ./scripts/provision.sh
+
+- name: frontend.local
+  description: frontend node
+  box: centos/6
+  cpus: 2
+  cpu_execution_cap: 75
+  ram: 1024
+  ssh_port: 2202
+  provision:
+    meta-data: ./cloud-init/nocloud-net/meta-data.yaml
+    user-data: ./cloud-init/nocloud-net/user-data-frontend.yaml
+    script: ./scripts/provision.sh

@@ -10,43 +10,49 @@ boxes = YAML.load_file('./boxes.yaml')
 VAGRANTFILE_API_VERSION = 2
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  boxes.each do |box|
-    config.vm.define box['name'] do |box_config|
+  boxes.each do |boxes|
+    config.vm.define boxes['name'] do |srv|
       # OS and hostname
-      box_config.vm.box = box['box']
-      if box['box_version']
-        box_config.vm.box_version = box['box_version']
+      srv.vm.box = boxes['box']
+      if boxes['box_version']
+        srv.vm.box_version = boxes['box_version']
       end
-      box_config.vm.hostname = box['name']
+      srv.vm.hostname = boxes['name']
 
       # Networking.  By default a NAT interface is added.
       # Add an internal network like this:
-      #   box_config.vm.network 'private_network', type: 'dhcp', virtualbox__intnet: true
+      #   srv.vm.network 'private_network', type: 'dhcp', virtualbox__intnet: true
       # Add a bridged network
-      if box['public_network']
-        if box['public_network']['ip']
-          box_config.vm.network 'public_network', bridge: box['public_network']['bridge'], ip: box['public_network']['ip']
+      if boxes['public_network']
+        if boxes['public_network']['ip']
+          srv.vm.network 'public_network', bridge: boxes['public_network']['bridge'], ip: boxes['public_network']['ip']
         else
-          box_config.vm.network 'public_network', bridge: box['public_network']['bridge']
+          srv.vm.network 'public_network', bridge: boxes['public_network']['bridge']
         end
       end
 
-      # Shared folders
-      box_config.vm.synced_folder '.', '/vagrant', disabled: true
+      if boxes['ssh_port']
+        srv.vm.network :forwarded_port, guest: 22, host: boxes['ssh_port'], id: 'ssh'
+      end
 
-      box_config.vm.provider 'virtualbox' do |vb|
-        vb.customize ['modifyvm', :id, '--cpus', box['cpus']]
-        vb.customize ['modifyvm', :id, '--cpuexecutioncap', box['cpu_execution_cap']]
-        vb.customize ['modifyvm', :id, '--memory', box['ram']]
-        vb.customize ['modifyvm', :id, '--name', box['name']]
-        vb.customize ['modifyvm', :id, '--description', box['description']]
+      # Shared folders
+      srv.vm.synced_folder '.', '/vagrant', disabled: true
+
+      srv.vm.provider 'virtualbox' do |vb|
+        vb.customize ['modifyvm', :id, '--cpus', boxes['cpus']]
+        vb.customize ['modifyvm', :id, '--cpuexecutioncap', boxes['cpu_execution_cap']]
+        vb.customize ['modifyvm', :id, '--memory', boxes['ram']]
+        vb.customize ['modifyvm', :id, '--name', boxes['name']]
+        vb.customize ['modifyvm', :id, '--description', boxes['description']]
         vb.customize ['modifyvm', :id, '--groups', '/vagrant']
       end
 
       # Copy cloud-init files to tmp and provision
-      config.vm.provision :file, :source => './cloud-init/nocloud-net/meta-data.yaml', :destination => '/tmp/vagrant/cloud-init/nocloud-net/meta-data'
-      config.vm.provision :file, :source => './cloud-init/nocloud-net/user-data.yaml', :destination => '/tmp/vagrant/cloud-init/nocloud-net/user-data'
-      config.vm.provision :shell, :path => './scripts/provision.sh'
+      if boxes['provision']
+        srv.vm.provision :file, :source => boxes['provision']['meta-data'], :destination => '/tmp/vagrant/cloud-init/nocloud-net/meta-data'
+        srv.vm.provision :file, :source => boxes['provision']['user-data'], :destination => '/tmp/vagrant/cloud-init/nocloud-net/user-data'
+        srv.vm.provision :shell, :path => boxes['provision']['script']
+      end
     end
   end
 end
