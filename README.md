@@ -5,7 +5,7 @@ Vagrant project for testing cloud-init scripts.
 ## How to Use
 
 1. Edit the `meta-data.yaml` and `user-data.yaml` files located in `<project-directory>/cloud-init/nocloud-net/`.
-    * Note that the vagrant provsioner copies the above files to `/var/lib/cloud/seed/nocloud-net/` without the `.yaml` extension.
+    * Note that the vagrant provisioner copies the above files to `/var/lib/cloud/seed/nocloud-net/` without the `.yaml` extension.
 
 1. Start the box, login and check the configuration.
 
