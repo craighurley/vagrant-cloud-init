@@ -32,7 +32,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
 
       if boxes['ssh_port']
-        srv.vm.network :forwarded_port, guest: 22, host: boxes['ssh_port'], id: 'ssh'
+        srv.vm.network :forwarded_port, guest: 22, host: boxes['ssh_port'], host_ip: '127.0.0.1', id: 'ssh'
       end
 
       # Shared folders
