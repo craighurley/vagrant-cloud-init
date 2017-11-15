@@ -11,7 +11,7 @@ USER_DATA=/tmp/vagrant/cloud-init/nocloud-net/user-data
 [[ ! -f /etc/centos-release ]] && exit 1
 
 # check if vagrant_provision has run before
-[[ -f $SUCCESS_INDICATOR ]] && exit 1
+[[ -f $SUCCESS_INDICATOR ]] && exit 0
 
 # install cloud-init
 yum install -y cloud-init

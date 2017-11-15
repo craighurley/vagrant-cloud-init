@@ -51,7 +51,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       if boxes['provision']
         srv.vm.provision :file, :source => boxes['provision']['meta-data'], :destination => '/tmp/vagrant/cloud-init/nocloud-net/meta-data'
         srv.vm.provision :file, :source => boxes['provision']['user-data'], :destination => '/tmp/vagrant/cloud-init/nocloud-net/user-data'
-        srv.vm.provision :shell, :path => boxes['provision']['script']
+        srv.vm.provision :shell, :path => boxes['provision']['cloud-init']
       end
     end
   end
