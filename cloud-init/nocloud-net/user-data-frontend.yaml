@@ -23,7 +23,7 @@ users:
 packages:
   - httpd
 
-# runcmd does not seem to work (on CentOS 6)
+# runcmd needs a reboot on CentOS 7
 runcmd:
   - chkconfig httpd on
   - service httpd start
