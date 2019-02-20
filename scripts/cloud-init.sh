@@ -13,8 +13,14 @@ USER_DATA=/tmp/vagrant/cloud-init/nocloud-net/user-data
 # check if vagrant_provision has run before
 [[ -f $SUCCESS_INDICATOR ]] && exit 0
 
-# install cloud-init
-yum install -y cloud-init
+# install required packages, including cloud-init
+yum install -y epel-release
+yum install -y cloud-init avahi nss-mdns
+
+# enable Multicast DNS
+sed -i.bak -e 's/^hosts:.*/hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4/g' /etc/nsswitch.conf
+systemctl start avahi-daemon
+systemctl enable avahi-daemon
 
 # write cloud-init files
 mkdir -p $DATA_SOURCE
