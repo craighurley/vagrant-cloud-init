@@ -13,14 +13,33 @@ USER_DATA=/tmp/vagrant/cloud-init/nocloud-net/user-data
 # check if vagrant_provision has run before
 [[ -f $SUCCESS_INDICATOR ]] && exit 0
 
-# install required packages, including cloud-init
 yum install -y epel-release
 yum install -y cloud-init avahi nss-mdns
 
+# HACK: mDNS has an issue where other clients cannot resolve this host after vagrant halt/suspend
+hostname "$1"
+
 # enable Multicast DNS
 sed -i.bak -e 's/^hosts:.*/hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4/g' /etc/nsswitch.conf
-systemctl start avahi-daemon
+systemctl restart avahi-daemon
 systemctl enable avahi-daemon
+
+# HACK: mDNS has an issue where other clients cannot resolve this host after vagrant halt/suspend
+cat << EOF > /etc/NetworkManager/dispatcher.d/ifup-local
+#!/bin/sh
+
+case "\$1" in
+    eth*)
+        # Record event in /var/log/messages
+        logger "\$1 has come up... resetting hostname to $1 and restarting avahi-daemon.service - this is a hack"
+        hostname "$1"
+        systemctl restart avahi-daemon.service
+        ;;
+esac
+
+exit 0
+EOF
+chmod 700 /etc/NetworkManager/dispatcher.d/ifup-local
 
 # write cloud-init files
 mkdir -p $DATA_SOURCE

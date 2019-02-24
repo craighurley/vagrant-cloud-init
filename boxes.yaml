@@ -2,10 +2,8 @@
 - name: haproxy.local
   description: haproxy node
   box: centos/7
-  cpus: 2
-  cpu_execution_cap: 75
+  cpus: 1
   ram: 1024
-  ssh_port: 2201
   provision:
     meta-data: ./cloud-init/nocloud-net/meta-data.yaml
     user-data: ./cloud-init/nocloud-net/user-data-haproxy.yaml
@@ -14,10 +12,8 @@
 - name: frontend.local
   description: frontend node
   box: centos/7
-  cpus: 2
-  cpu_execution_cap: 75
+  cpus: 1
   ram: 1024
-  ssh_port: 2202
   provision:
     meta-data: ./cloud-init/nocloud-net/meta-data.yaml
     user-data: ./cloud-init/nocloud-net/user-data-frontend.yaml

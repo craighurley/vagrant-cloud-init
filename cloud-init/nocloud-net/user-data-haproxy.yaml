@@ -1,9 +1,5 @@
 #cloud-config
 
-hostname: haproxy
-fqdn: haproxy.local
-manage_etc_hosts: true
-
 # set the locale
 locale: en_NZ.UTF-8
 

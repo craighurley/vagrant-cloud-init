@@ -1,9 +1,5 @@
 #cloud-config
 
-hostname: frontend
-fqdn: frontend.local
-manage_etc_hosts: true
-
 # set the locale
 locale: en_NZ.UTF-8
 
